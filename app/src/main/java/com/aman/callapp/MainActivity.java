@@ -1,11 +1,8 @@
 package com.aman.callapp;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Looper;
 import android.util.Log;
@@ -22,17 +19,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
 
     //location code starts
     SupportMapFragment supportMapFragment;
-    FusedLocationProviderClient client;
     //end
     String edhiNumber= "12345";
     String fireBrigadeNumber= "678910";
@@ -41,27 +33,28 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
 
 
-    LocationManager locationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        if(ContextCompat.checkSelfPermission(
-                getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED ) {
-
-            ActivityCompat.requestPermissions(
-                    MainActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_CODE_LOCATION_PERMISSION
-            );
-
-        } else {
-            getCurrentLocation();
-        }
-
+        Intent intent = new Intent(this, SignupActivity.class);
+        startActivity(intent);
+//
+//        if(ContextCompat.checkSelfPermission(
+//                getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
+//        ) != PackageManager.PERMISSION_GRANTED ) {
+//
+//            ActivityCompat.requestPermissions(
+//                    MainActivity.this,
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                    REQUEST_CODE_LOCATION_PERMISSION
+//            );
+//
+//        } else {
+//            getCurrentLocation();
+//        }
+//
     }
 
     private void getCurrentLocation() {
@@ -74,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 .findFragmentById(R.id.google_map);
 
 
-        Task<Void> gotLocation = LocationServices.getFusedLocationProviderClient(MainActivity.this)
+        LocationServices.getFusedLocationProviderClient(MainActivity.this)
                 .requestLocationUpdates(locationRequest, new LocationCallback() {
 
                     @Override
@@ -235,7 +228,6 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.CALL_PHONE},   //request specific permission from user
                     10);
             call(number);
-            return;
         }else {
             //have got permission
             try{
