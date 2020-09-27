@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+
+    <Button
+            android:id="@+id/edhiButton"
+            android:layout_width="170dp"
+            android:layout_height="60dp"
+            android:text="Edhi Helpline"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="#000000"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.867"
+            app:layout_constraintVertical_bias="0.229"
+            android:onClick="callEdhi"/>
+    <Button
+            android:id="@+id/fireBrigadeButton"
+            android:layout_width="170dp"
+            android:layout_height="60dp"
+            android:text="Fire Brigade"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="#000000"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.128"
+            app:layout_constraintVertical_bias="0.229"
+            android:onClick="callFireBrigade"/>
+    <TextView
+            android:text="Below are some of the emergency numbers available. Click to call!"
+            android:layout_width="349dp"
+            android:layout_height="67dp" android:id="@+id/headingTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/fireBrigadeButton" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintVertical_bias="0.609"
+            android:textSize="22sp"/>
+    <fragment
+            android:layout_width="354dp"
+            android:layout_height="419dp"
+            android:id="@+id/google_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            app:layout_constraintTop_toBottomOf="@+id/edhiButton" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
