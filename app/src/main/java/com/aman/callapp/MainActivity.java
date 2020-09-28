@@ -1,7 +1,9 @@
 package com.aman.callapp;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Looper;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity {
 
+    DbHelper myDb;
     //location code starts
     SupportMapFragment supportMapFragment;
     //end
@@ -30,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     String fireBrigadeNumber= "678910";
     double latitude;
     double longitude;
+    public static SharedPreferences sharedPreferences;
+    public static boolean isLoggedIn = false;
+
+
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
 
 
@@ -37,24 +44,44 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        myDb = new DbHelper(this);
 
-        Intent intent = new Intent(this, SignupActivity.class);
-        startActivity(intent);
-//
-//        if(ContextCompat.checkSelfPermission(
-//                getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
-//        ) != PackageManager.PERMISSION_GRANTED ) {
-//
-//            ActivityCompat.requestPermissions(
-//                    MainActivity.this,
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                    REQUEST_CODE_LOCATION_PERMISSION
-//            );
-//
-//        } else {
-//            getCurrentLocation();
-//        }
-//
+
+
+
+
+        sharedPreferences = getSharedPreferences("callapp", Context.MODE_PRIVATE);
+
+        int users = sharedPreferences.getInt("users",0);
+
+        if(!isLoggedIn) {
+            Intent intent;
+            if(users == 0) {
+                intent = new Intent(this, SignupActivity.class);
+            } else {
+                intent = new Intent(this, LoginActivity.class);
+            }
+            startActivity(intent);
+            finish();
+        } else {
+
+            if(ContextCompat.checkSelfPermission(
+                    getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED ) {
+
+                ActivityCompat.requestPermissions(
+                        MainActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_CODE_LOCATION_PERMISSION
+                );
+
+            } else {
+                getCurrentLocation();
+            }
+        }
+
+
+
     }
 
     private void getCurrentLocation() {
