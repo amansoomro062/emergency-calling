@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Looper;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -35,22 +37,43 @@ public class MainActivity extends AppCompatActivity {
     double longitude;
     public static SharedPreferences sharedPreferences;
     public static boolean isLoggedIn = false;
+    String callerNumber= "";
 
 
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
+    private static final int REQUEST_READ_PHONE_STATE = 11;
 
+
+    public void showRecord() {
+        Cursor cursor = myDb.getRecords();
+
+        if (cursor.moveToFirst()){
+            do{
+                Double lat = cursor.getDouble(cursor.getColumnIndex("LAT"));
+                Double lng = cursor.getDouble(cursor.getColumnIndex("LNG"));
+                String number = cursor.getString(cursor.getColumnIndex("CALLER_NUMBER"));
+                String time = cursor.getString(cursor.getColumnIndex("DATE_TIME"));
+                // do what ever you want here
+
+                Log.i("PEEP 1", "showRecord: "+lat+" - "+lng+" - "+number+" - "+time);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        sharedPreferences = getSharedPreferences("callapp", Context.MODE_PRIVATE);
+
         myDb = new DbHelper(this);
 
 
 
-
-
-        sharedPreferences = getSharedPreferences("callapp", Context.MODE_PRIVATE);
 
         int users = sharedPreferences.getInt("users",0);
 
@@ -65,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
             finish();
         } else {
 
+
+
+
             if(ContextCompat.checkSelfPermission(
                     getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED ) {
@@ -77,10 +103,19 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 getCurrentLocation();
+                showRecord();
             }
         }
 
 
+
+    }
+
+    public void showReport(View view) {
+//      Toast.makeText(this, "Show report", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ReportActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 
@@ -152,6 +187,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull @org.jetbrains.annotations.NotNull String[] permissions, @NonNull @org.jetbrains.annotations.NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case REQUEST_READ_PHONE_STATE:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Log.i("PEEP", "onRequestPermissionsResult: Mili wai");
+                    setCallerNumber();
+                }
+                break;
+            default:
+                break;
+        }
+
         if(requestCode == REQUEST_CODE_LOCATION_PERMISSION && grantResults.length > 0) {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getCurrentLocation();
@@ -248,6 +295,23 @@ public class MainActivity extends AppCompatActivity {
         //another piece of code
         Intent callIntent = new Intent(Intent.ACTION_CALL); //use ACTION_CALL class
         callIntent.setData(Uri.parse("tel:"+number));    //this is the phone number calling
+
+
+
+        //CHECK PERMISSION TO READ PHONE NUM
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_NUMBERS}, REQUEST_READ_PHONE_STATE);
+            setCallerNumber();
+        } else {
+
+            setCallerNumber();
+        }
+
+        //END
+
         //check permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             //request permission from user if the app hasn't got the required permission
@@ -258,6 +322,21 @@ public class MainActivity extends AppCompatActivity {
         }else {
             //have got permission
             try{
+                Log.i("PEEP", String.format(
+                        "%s %s %s %s",
+                        String.valueOf(latitude), String.valueOf(longitude), callerNumber, "date"
+                ));
+
+                boolean isInserted = myDb.addCallRecord(latitude, longitude, callerNumber,  "date");
+                if(isInserted) {
+
+                    Log.i("PEEP", "Record added successfully!");
+
+
+                } else {
+                    Toast.makeText(this, "There was problem adding record!", Toast.LENGTH_SHORT).show();
+                }
+
                 startActivity(callIntent);  //call activity and make phone call
             }
             catch (android.content.ActivityNotFoundException ex){
@@ -265,5 +344,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    public void setCallerNumber() {
+        TelephonyManager tMgr = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        this.callerNumber = tMgr.getLine1Number();
+        Log.i("PEEP", "call: "+callerNumber);
     }
 }

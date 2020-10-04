@@ -10,19 +10,32 @@
 
     <Button
             android:id="@+id/edhiButton"
-            android:layout_width="170dp"
+            android:layout_width="133dp"
             android:layout_height="60dp"
             android:text="Edhi Helpline"
             android:backgroundTint="@color/colorPrimary"
             android:textColor="#000000"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.867"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.629"
             app:layout_constraintVertical_bias="0.229"
             android:onClick="callEdhi"/>
+
+    <Button
+            android:id="@+id/reportButton"
+            android:layout_width="77dp"
+            android:layout_height="60dp"
+            android:text="Logs"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="#000000"
+            android:onClick="showReport"
+            app:layout_constraintTop_toBottomOf="@+id/headingTextView"
+            app:layout_constraintBottom_toTopOf="@+id/google_map" app:layout_constraintStart_toEndOf="@+id/edhiButton"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.384"
+            app:layout_constraintVertical_bias="0.542"/>
     <Button
             android:id="@+id/fireBrigadeButton"
-            android:layout_width="170dp"
+            android:layout_width="140dp"
             android:layout_height="60dp"
             android:text="Fire Brigade"
             android:backgroundTint="@color/colorPrimary"
