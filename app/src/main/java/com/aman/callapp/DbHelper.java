@@ -12,6 +12,14 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "users.db";
     public static final String TABLE_NAME = "users_table";
 
+    public static final String SECOND_TABLE_NAME = "record_table";
+
+    public static final String RECORD_COL_1 = "ID";
+    public static final String RECORD_COL_2 = "LAT";
+    public static final String RECORD_COL_3 = "LNG";
+    public static final String RECORD_COL_4 = "CALLER_NUMBER";
+    public static final String RECORD_COL_5 = "DATE_TIME";
+
 
     public static final String COL_1 = "ID";
 
@@ -33,11 +41,14 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE table "+TABLE_NAME+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, FIRST_NAME TEXT, LAST_NAME TEXT, AGE INTEGER, EMAIL TEXT, PASSWORD TEXT )");
+        db.execSQL("CREATE table "+SECOND_TABLE_NAME+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, LAT TEXT, LNG TEXT, DATE_TIME DATETIME )");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+SECOND_TABLE_NAME);
         onCreate(db);
     }
 
