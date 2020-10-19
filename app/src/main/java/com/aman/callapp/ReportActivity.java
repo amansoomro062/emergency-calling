@@ -1,5 +1,7 @@
 package com.aman.callapp;
 
+import android.net.Uri;
+import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -34,6 +36,12 @@ public class ReportActivity extends AppCompatActivity {
     private ArrayList<String> num = new ArrayList<String>();
     private ArrayList<String> dateTime = new ArrayList<String>();
 
+    private ArrayList<String> distance = new ArrayList<String>();
+
+    private String baseUrlGoogleMap = "http://www.google.com/maps/place/";
+
+
+
     private ListView userList;
     private AlertDialog.Builder build;
 
@@ -41,10 +49,27 @@ public class ReportActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
-
         userList = (ListView) findViewById(R.id.List);
 
         mHelper = new DbHelper(this);
+
+        userList.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("PEEP", "onItemClick: "+ position+ " - ");
+                double lattitude = lat.get(position);
+                double longitude = lng.get(position);
+
+                baseUrlGoogleMap = "http://www.google.com/maps/place/";
+                baseUrlGoogleMap+= lattitude+","+longitude;
+                Log.i("PEEP", "onItemClick: "+baseUrlGoogleMap);
+
+                Uri uriUrl = Uri.parse(baseUrlGoogleMap);
+                Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+                startActivity(launchBrowser);
+
+            }
+        });
 
 
     }
@@ -81,13 +106,14 @@ public class ReportActivity extends AppCompatActivity {
                 lng.add(Double.valueOf(mCursor.getString(mCursor.getColumnIndex("LNG"))));
                 num.add(mCursor.getString(mCursor.getColumnIndex(DbHelper.RECORD_COL_4)));
                 dateTime.add(mCursor.getString(mCursor.getColumnIndex("DATE_TIME")));
+                distance.add(mCursor.getString(mCursor.getColumnIndex("DISTANCE")));
 
             } while (mCursor.moveToNext());
             //do above till data exhausted
         }
 
         //display to screen
-        DisplayAdapter disadpt = new DisplayAdapter(ReportActivity.this, id, lat, lng, num, dateTime);
+        DisplayAdapter disadpt = new DisplayAdapter(ReportActivity.this, id, lat, lng, num, dateTime, distance);
         userList.setAdapter(disadpt);
         mCursor.close();
     }//end displayData

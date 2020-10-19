@@ -22,6 +22,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String RECORD_COL_3 = "LNG";
     public static final String RECORD_COL_4 = "CALLER_NUMBER";
     public static final String RECORD_COL_5 = "DATE_TIME";
+    public static final String RECORD_COL_6 = "DISTANCE";
 
 
     public static final String COL_1 = "ID";
@@ -37,12 +38,12 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String COL_6 = "PASSWORD";
 
     public DbHelper(Context context) {
-        super(context, DATABASE_NAME,null,6);
+        super(context, DATABASE_NAME,null,8);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE table "+SECOND_TABLE_NAME+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, LAT TEXT, LNG TEXT, CALLER_NUMBER TEXT ,DATE_TIME TEXT )");
+        db.execSQL("CREATE table "+SECOND_TABLE_NAME+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, LAT TEXT, LNG TEXT, CALLER_NUMBER TEXT ,DATE_TIME TEXT, DISTANCE TEXT )");
         db.execSQL("CREATE table "+TABLE_NAME+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, FIRST_NAME TEXT, LAST_NAME TEXT, AGE INTEGER, EMAIL TEXT, PASSWORD TEXT )");
 
 
@@ -56,7 +57,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addCallRecord(Double lat, Double lng, String number, String date) {
+    public boolean addCallRecord(Double lat, Double lng, String number, String date, String distance) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -64,6 +65,8 @@ public class DbHelper extends SQLiteOpenHelper {
         contentValues.put(RECORD_COL_2, lat);
         contentValues.put(RECORD_COL_3, lng);
         contentValues.put(RECORD_COL_5, date);
+
+        contentValues.put(RECORD_COL_6, distance);
 
         long result = db.insert("record", null, contentValues);
 

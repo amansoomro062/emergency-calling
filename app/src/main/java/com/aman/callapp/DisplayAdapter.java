@@ -18,8 +18,10 @@ public class DisplayAdapter extends BaseAdapter {
     private ArrayList<String> num;
     private ArrayList<String> dateTime;
 
+    private ArrayList<String> distance;
 
-    public DisplayAdapter(Context c, ArrayList<Integer> id,ArrayList<Double> lat, ArrayList<Double> lng, ArrayList<String> num,ArrayList<String> dateTime  ) {
+
+    public DisplayAdapter(Context c, ArrayList<Integer> id,ArrayList<Double> lat, ArrayList<Double> lng, ArrayList<String> num,ArrayList<String> dateTime, ArrayList<String> distance  ) {
         this.mContext = c;
         //transfer content from database to temporary memory
         this.id = id;
@@ -27,6 +29,7 @@ public class DisplayAdapter extends BaseAdapter {
         this.lng = lng;
         this.num = num;
         this.dateTime = dateTime;
+        this.distance = distance;
 
     }
 
@@ -54,12 +57,12 @@ public class DisplayAdapter extends BaseAdapter {
             mHolder = new Holder();
 
             //link to TextView
-            mHolder.txtId = (TextView) child.findViewById(R.id.record_id);
             mHolder.txtLat = (TextView) child.findViewById(R.id.lat);
             mHolder.txtLng = (TextView) child.findViewById(R.id.lng);
 
             mHolder.txtNum = (TextView) child.findViewById(R.id.num);
             mHolder.txtDateTime = (TextView) child.findViewById(R.id.date_time);
+            mHolder.txtDistance = child.findViewById(R.id.distance);
             child.setTag(mHolder);
         } else {
             mHolder = (Holder) child.getTag();
@@ -70,18 +73,17 @@ public class DisplayAdapter extends BaseAdapter {
         mHolder.txtLng.setText(lng.get(pos).toString());
         mHolder.txtNum.setText(num.get(pos));
         mHolder.txtDateTime.setText(dateTime.get(pos));
-
+        mHolder.txtDistance.setText(distance.get(pos));
 
         return child;
     }
 
     public class Holder {
-        TextView txtId;
         TextView txtLat;
         TextView txtLng;
-
         TextView txtNum;
         TextView txtDateTime;
+        TextView txtDistance;
     }
 
 }

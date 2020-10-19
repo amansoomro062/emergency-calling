@@ -2,14 +2,19 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#B58897"
-                android:gravity="center_horizontal" >
+                android:background="#1C1A1B"
+                android:gravity="center_horizontal">
 
+    <TextView
+            android:text="Select any record to load location!"
+            android:layout_width="match_parent"
+            android:layout_height="53dp" android:id="@+id/textView2" android:textSize="24sp"
+            android:textAlignment="center" android:layout_marginTop="20dp"/>
     <View
             android:id="@+id/a"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#8DB3E1" />
+            android:background="#8DB3E1"/>
 
     <ListView
             android:id="@+id/List"
@@ -17,6 +22,6 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/a"
             android:divider="#8DB3E1"
-            android:dividerHeight="2dp" />
+            android:dividerHeight="2dp" android:layout_marginTop="109dp"/>
 
 </RelativeLayout>

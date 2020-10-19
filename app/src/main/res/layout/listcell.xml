@@ -2,44 +2,46 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#F3CAE5"
+              android:background="#191818"
               android:gravity="center_vertical"
               android:orientation="horizontal"
               android:padding="8dp" >
 
 
     <TextView
-            android:id="@+id/record_id"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#000" />
-
-    <TextView
             android:id="@+id/lat"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#000" />
+            android:layout_height="29dp"
+            android:layout_weight="2"
+            android:textColor="#D6D1D1"/>
 
     <TextView
             android:id="@+id/lng"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="29dp"
             android:layout_weight="2"
-            android:textColor="#000" />
+            android:textColor="#D6D1D1"/>
 
     <TextView
             android:id="@+id/num"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="29dp"
             android:layout_weight="2"
-            android:textColor="#000" />
-
+            android:textColor="#D6D1D1"/>
     <TextView
             android:id="@+id/date_time"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="29dp"
             android:layout_weight="2"
-            android:textColor="#000" />
+            android:textColor="#D6D1D1"/>
+
+
+    <TextView
+            android:id="@+id/distance"
+            android:layout_width="0dp"
+            android:layout_height="29dp"
+            android:layout_weight="2"
+            android:textColor="#D6D1D1"/>
 </LinearLayout>
+
+
